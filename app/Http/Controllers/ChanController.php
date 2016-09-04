@@ -6,11 +6,6 @@ use DB;
 
 use \App\Video;
 
-use YoutubeDl\YoutubeDl;
-use YoutubeDl\Exception\CopyrightException;
-use YoutubeDl\Exception\NotFoundException;
-use YoutubeDl\Exception\PrivateVideoException;
-
 class ChanController extends Controller
 {
     public function index($id)
@@ -40,28 +35,14 @@ class ChanController extends Controller
     {
       $vid_db = \App\Video::where('id', $vid)->get();
 
-      $dl = new YoutubeDl([
-          'write-sub' => true,
-          'all-subs' => true,
-          'write-description' => true,
-          'write-info-json' => true,
-          'write-annotations' => true,
-          'write-thumbnail' => true,
-          'no-overwrites' => true,
-          'format' => 'bestvideo[ext!=webm]‌​+bestaudio[ext!=webm]‌​/best[ext!=webm]',
-          'output' => '%(id)s.%(ext)s',
-      ]);
-
       $dlpath = env('DL_LOC') . '/' . $id;
       if(!file_exists($dlpath))
       {
         mkdir($dlpath);
       }
 
-      //exit('youtube-dl --write-sub --all-subs --write-description --write-info-json --write-annotations --write-thumbnail -f bestvideo[ext!=webm]+bestaudio[ext!=webm]/best[ext!=webm] -w -o "' . $dlpath . @"\%(id)s.%(ext)s" . '" https://www.youtube.com/watch?v=' . $vid_db[0]->YT_ID);
-
-      chdir($dlpath);
-      exec('youtube-dl --write-sub --all-subs --write-description --write-info-json --write-annotations --write-thumbnail -f bestvideo[ext!=webm]+bestaudio[ext!=webm]/best[ext!=webm] -w -o "' . $dlpath . @"\%(id)s.%(ext)s" . '" https://www.youtube.com/watch?v=' . $vid_db[0]->YT_ID);
+      //chdir($dlpath);
+      exec('youtube-dl --write-sub --all-subs --write-description --write-info-json --write-annotations --write-thumbnail -f bestvideo[ext!=webm]+bestaudio[ext!=webm]/best[ext!=webm] -w -o "' . $dlpath . @"/%(id)s.%(ext)s" . '" https://www.youtube.com/watch?v=' . $vid_db[0]->YT_ID);
 
       $this->__processDownload($dlpath, $vid_db[0]->YT_ID);
 
