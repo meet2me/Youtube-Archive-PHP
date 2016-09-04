@@ -1,0 +1,4 @@
+/vendor
+.env
+public/videos/
+database/db.sqlite
