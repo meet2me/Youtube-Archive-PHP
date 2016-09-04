@@ -11,7 +11,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-      $channels = \App\Channel::all();
+      $channels = \App\Channel::orderByRaw('Title COLLATE NOCASE ASC')
+                    ->get();
 
       return view('home', ['channels' => $channels]);
     }
