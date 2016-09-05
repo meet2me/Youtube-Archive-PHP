@@ -14,7 +14,10 @@ class HomeController extends Controller
       $channels = \App\Channel::orderByRaw('Title COLLATE NOCASE ASC')
                     ->get();
 
-      return view('home', ['channels' => $channels]);
+      return view('home', [
+        'channels' => $channels,
+        'disk' => $this->__getDiskInfo(),
+      ]);
     }
 
     public function addChan(Request $request)

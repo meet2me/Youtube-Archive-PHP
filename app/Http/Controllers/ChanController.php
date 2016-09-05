@@ -17,7 +17,11 @@ class ChanController extends Controller
                   ->orderBy('Upload_Date', 'desc')
                   ->get();
 
-      return view('chan', ['videos' => $videos, 'id' => $id]);
+      return view('chan', [
+        'videos' => $videos,
+        'id' => $id,
+        'disk' => $this->__getDiskInfo(),
+      ]);
     }
 
     public function updateVideos($YT_ID)

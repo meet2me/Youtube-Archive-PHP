@@ -1,8 +1,10 @@
 @extends("base")
 
-@section("content")
+@section('content')
 <div class="row">
-  <div class="col-md-2"></div>
+  <div class="col-md-2">
+    @include('extras.diskspace')
+  </div>
   <div class="col-md-8">
     <table class="table table-bordered table-hover">
       <thead>
