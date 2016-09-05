@@ -14,8 +14,13 @@ class HomeController extends Controller
       $channels = \App\Channel::orderByRaw('Title COLLATE NOCASE ASC')
                     ->get();
 
+      foreach ($channels as $chan) {
+        $chanstats[$chan->id] = $this->__getChanStats($chan->id);
+      }
+
       return view('home', [
         'channels' => $channels,
+        'chanstats' => $chanstats,
         'disk' => $this->__getDiskInfo(),
       ]);
     }
@@ -103,7 +108,7 @@ class HomeController extends Controller
 
       return true;
     }
-    
+
     public function __getChanStats($id)
     {
       $chanstats_dl = \App\Video::where('Chan_ID', $id)
@@ -122,8 +127,17 @@ class HomeController extends Controller
                       ->where('YT_Status', 'unlisted')
                       ->count();
 
-      $chanstats_video_public = \App\Video::where('Chan_ID', $id)
+      $chanstats_video_notfound = \App\Video::where('Chan_ID', $id)
                       ->where('YT_Status', 'not found')
                       ->count();
+
+
+      return array(
+        'dl' => $chanstats_dl,
+        'nodl' => $chanstats_nodl,
+        'v_pub' => $chanstats_video_public,
+        'v_unlisted' => $chanstats_video_unlisted,
+        'v_notfound' => $chanstats_video_notfound
+      );
     }
 }
