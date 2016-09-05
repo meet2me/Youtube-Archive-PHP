@@ -11,26 +11,32 @@ class ChanController extends Controller
     public function index($id)
     {
       $chan = \App\Channel::where('YT_ID', $id)
-                  ->get();
+                  ->first();
 
-      $videos = \App\Video::where('Chan_ID', $chan[0]->id)
+      if(count($chan) == 0)
+      {
+        return "Chan not found!";
+      }
+
+      $videos = \App\Video::where('Chan_ID', $chan->id)
                   ->orderBy('Upload_Date', 'desc')
                   ->get();
 
       return view('chan', [
         'videos' => $videos,
+        'chan' => $chan,
         'id' => $id,
         'disk' => $this->__getDiskInfo(),
       ]);
     }
 
-    public function updateVideos($YT_ID)
+    public function updatePlaylist($YT_ID)
     {
-      $chan = \App\Channel::where('YT_ID', $YT_ID)->get();
+      $chan = \App\Channel::where('YT_ID', $YT_ID)->first();
 
-      $playlistid = $chan[0]->UploadPlaylistID;
+      $playlistid = $chan->UploadPlaylistID;
 
-      $this->__updateVideoPage($YT_ID, $chan[0]->id, $playlistid);
+      $this->__updateVideoPage($YT_ID, $chan->id, $playlistid);
 
       return redirect()->route('chan', ['id' => $YT_ID]);
     }
@@ -55,7 +61,25 @@ class ChanController extends Controller
 
     public function updateVideo($chid, $vid)
     {
-      app('App\Http\Controllers\HomeController')->__ProcessSeperateVideo($vid);
+      $this->__ProcessSeperateVideo($vid);
+
+      return redirect()->route('chan', ['id' => $chid]);
+    }
+
+    public function updateVideos($chid)
+    {
+      $chan = \App\Channel::where('YT_ID', $chid)->first();
+
+      if(count($chan) == 0)
+      {
+        return "Channel not found!";
+      }
+
+      $videos = \App\Video::where('Chan_ID', $chan->id)->get();
+
+      foreach ($videos as $video) {
+        $this->__ProcessSeperateVideo($video->YT_ID);
+      }
 
       return redirect()->route('chan', ['id' => $chid]);
     }
@@ -115,10 +139,10 @@ class ChanController extends Controller
 
     public function __processVideo($chanid, $json)
     {
-      $vid_check = \App\Video::where('YT_ID', $json->snippet->resourceId->videoId)->get();
+      $vid_check = \App\Video::where('YT_ID', $json->snippet->resourceId->videoId)->first();
 
       // Video not exist. So create!
-      if ($vid_check->isEmpty()){
+      if (count($vid_check) == 0){
         // Create new Video
         $v = new \App\Video;
         $v->YT_ID = $json->snippet->resourceId->videoId;
@@ -201,10 +225,5 @@ class ChanController extends Controller
       $vid_check->File_Status = "Saved!";
       $vid_check->File_Name = $found_files[0];
       $vid_check->save();
-    }
-
-    public function __convertDate($str)
-    {
-      return new \DateTime($str);DateTime::createFromFormat(DateTime::ISO8601, $str);
     }
 }
