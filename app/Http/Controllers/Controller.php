@@ -9,9 +9,9 @@ class Controller extends BaseController
     public function __getDiskInfo()
     {
       return array(
-        'free' => disk_free_space(env('DL_LOC')),
+        'free' => disk_total_space(env('DL_LOC')) - disk_free_space(env('DL_LOC')),
         'total' => disk_total_space(env('DL_LOC')),
-        'format_free' => $this->__humanSize(disk_free_space(env('DL_LOC'))),
+        'format_free' => $this->__humanSize(disk_total_space(env('DL_LOC')) - disk_free_space(env('DL_LOC'))),
         'format_total' => $this->__humanSize(disk_total_space(env('DL_LOC'))),
       );
     }
