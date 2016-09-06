@@ -35,7 +35,12 @@ class UpdateVideos extends Command {
           $videos = \App\Video::where('Chan_ID', $chan->id)->get();
 
           foreach ($videos as $video) {
-            $this->__ProcessSeperateVideo($video->YT_ID);
+            try{
+                $this->__ProcessSeperateVideo($video->YT_ID);
+            }
+            catch(\Exception $e){
+                $this->error('ERROR: ' . $e);
+            }
           }
         }
 
