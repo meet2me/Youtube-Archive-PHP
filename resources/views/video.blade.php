@@ -41,7 +41,7 @@
       </table>
     </ul>
 
-    <div class="addnew">
+    <div class="boxdotted">
       <video width="1280" height="720" preload="metadata" controls>
         <source src="/videos/{{ $chan["YT_ID"] }}/{{ basename($video["File_Name"]) }}" type="video/mp4">
         Your browser does not support the video tag.

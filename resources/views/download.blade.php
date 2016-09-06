@@ -20,7 +20,7 @@
     </ul>
   </div>
   <div class="col-md-2">
-    <form class="addnew" action="/add" method="post">
+    <form class="boxdotted" action="/add" method="post">
       <div class="form-group">
         <label for="fgChanID">Add new Channel</label>
         <input type="text" class="form-control" id="fgChanID" name="chanID" placeholder="Channel ID">

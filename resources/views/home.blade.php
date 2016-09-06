@@ -21,10 +21,15 @@
           @forelse ($channels as $chan)
             <tr>
               <td><img src="{{ $chan->ThumbnailURL }}" width=32 height=32></img></td>
-              <td>
-                <span class="tag tag-success" title="Downloads"></span>
-              </td>
               <td><a href="/chan/{{ $chan->YT_ID }}">{{ $chan->Title }}</td>
+              <td>
+                <span class="tag tag-success" title="Downloads">{{ $chanstats[$chan->id]['dl'] }}</span>
+                <span class="tag tag-info" title="Not Downloaded">{{ $chanstats[$chan->id]['nodl'] }}</span>
+                |
+                <span class="tag tag-success" title="Public">{{ $chanstats[$chan->id]['v_pub'] }}</span>
+                <span class="tag tag-warning" title="Unlisted">{{ $chanstats[$chan->id]['v_unlisted'] }}</span>
+                <span class="tag tag-danger" title="Not Found">{{ $chanstats[$chan->id]['v_notfound'] }}</span>
+              </td>
               <td><a href="https://www.youtube.com/channel/{{ $chan->YT_ID }}">{{ $chan->YT_ID }}</a></td>
               <td></td>
             </tr>
@@ -38,7 +43,7 @@
     </ul>
   </div>
   <div class="col-md-2">
-    <form class="addnew" action="/add" method="post">
+    <form class="boxdotted" action="/add" method="post">
       <div class="form-group">
         <label for="fgChanID">Add new Channel</label>
         <input type="text" class="form-control" id="fgChanID" name="chanID" placeholder="Channel ID">
@@ -49,7 +54,7 @@
       <button type="submit" name="submitChName" value="1" class="btn btn-primary">Add Channel Name</button>
     </form>
 
-    <form class="addnew" action="/addvideo" method="post">
+    <form class="boxdotted" action="/addvideo" method="post">
       <div class="form-group">
         <label for="fgVideoID">Add individual video</label>
         <input type="text" class="form-control" id="fgVideoID" name="videoID" placeholder="Video ID">
