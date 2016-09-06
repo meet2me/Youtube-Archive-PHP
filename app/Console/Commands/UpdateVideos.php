@@ -27,7 +27,7 @@ class UpdateVideos extends Command {
     {
         $this->info('- Starting Video Update...');
 
-        $channels = \App\Channel::all();
+        $channels = \App\Channel::inRandomOrder()->get();
 
         foreach ($channels as $chan) {
           $this->info('= Updating Videos: ' . $chan->Title . ' (' . $chan->YT_ID . ')');
