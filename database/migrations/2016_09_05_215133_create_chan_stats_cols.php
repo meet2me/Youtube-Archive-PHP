@@ -28,12 +28,45 @@ class CreateChanStatsCols extends Migration
      */
     public function down()
     {
-      Schema::table('channel', function ($table) {
-          $table->dropColumn('stats_dl');
-          $table->dropColumn('stats_nodl');
-          $table->dropColumn('stats_v_pub');
-          $table->dropColumn('stats_v_unlisted');
-          $table->dropColumn('stats_v_notfound');
-      });
+      // Credit: https://laracasts.com/discuss/channels/eloquent/sqlite-issue-dropping-columns-sqlitelaravel-providing-incorrect-errors?page=1
+      if (Schema::hasColumn('channel', 'stats_dl'))
+      {
+          Schema::table('channel', function(BLueprint $table)
+          {
+              $table->dropColumn('stats_dl');
+          });
+      }
+
+      if (Schema::hasColumn('channel', 'stats_nodl'))
+      {
+          Schema::table('channel', function(BLueprint $table)
+          {
+              $table->dropColumn('stats_nodl');
+          });
+      }
+
+      if (Schema::hasColumn('channel', 'stats_v_pub'))
+      {
+          Schema::table('channel', function(BLueprint $table)
+          {
+              $table->dropColumn('stats_v_pub');
+          });
+      }
+
+      if (Schema::hasColumn('channel', 'stats_v_unlisted'))
+      {
+          Schema::table('channel', function(BLueprint $table)
+          {
+              $table->dropColumn('stats_v_unlisted');
+          });
+      }
+
+      if (Schema::hasColumn('channel', 'stats_v_notfound'))
+      {
+          Schema::table('channel', function(BLueprint $table)
+          {
+              $table->dropColumn('stats_v_notfound');
+          });
+      }
     }
 }
