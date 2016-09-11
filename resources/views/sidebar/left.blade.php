@@ -1,3 +1,5 @@
 @include('extras.diskspace')
 <br />
-@include('extras.queuedownloads')
+@if(!empty($queue))
+    @include('extras.queuedownloads')
+@endif
