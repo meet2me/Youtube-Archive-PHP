@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 
 use \App\Video;
+use \App\Jobs\DownloadVideoJob;
 
 class ChanController extends Controller
 {
@@ -27,6 +28,8 @@ class ChanController extends Controller
         'chan' => $chan,
         'id' => $id,
         'disk' => $this->__getDiskInfo(),
+        'queue' => $this->__getQueuedDownloads(),
+        'queued_ids' => $this->__getQueuedDownloadsIDs(),
       ]);
     }
 
@@ -41,22 +44,11 @@ class ChanController extends Controller
       return redirect()->route('chan', ['id' => $YT_ID]);
     }
 
-    public function downloadVideo($id, $vid)
+    public function downloadVideo($chan_yt_id, $db_video_id)
     {
-      $vid_db = \App\Video::where('id', $vid)->get();
+      \Queue::push(new DownloadVideoJob($chan_yt_id, $db_video_id));
 
-      $dlpath = env('DL_LOC') . '/' . $id;
-      if(!file_exists($dlpath))
-      {
-        mkdir($dlpath);
-      }
-
-      //chdir($dlpath);
-      exec('youtube-dl --write-sub --all-subs --write-description --write-info-json --write-annotations --write-thumbnail -f bestvideo[ext!=webm]+bestaudio[ext!=webm]/best[ext!=webm] -w -o "' . $dlpath . @"/%(id)s.%(ext)s" . '" https://www.youtube.com/watch?v=' . $vid_db[0]->YT_ID);
-
-      $this->__processDownload($dlpath, $vid_db[0]->YT_ID);
-
-      return redirect()->route('chan', ['id' => $id]);
+      return redirect()->route('chan', ['id' => $chan_yt_id]);
     }
 
     public function updateVideo($chid, $vid)
@@ -201,29 +193,5 @@ class ChanController extends Controller
 
         $vid_check->save();
       }
-    }
-
-    // Download Video
-    public function __processDownload($dlpath, $v_YTID)
-    {
-      $found_files = glob($dlpath . '/' . $v_YTID . '.mp4');
-
-      if(count($found_files) == 0)
-      {
-        return "No videos found... Download must have failed!";
-      }
-
-      $vid_check = \App\Video::where('YT_ID', $v_YTID)->first();
-
-      // Add first change log
-      $vcl = new \App\VideoChangeLog;
-      $vcl->Video_ID = $vid_check->id;
-      $vcl->File_Status = "Saved!";
-      $vcl->File_Name = $found_files[0];
-      $vcl->save();
-
-      $vid_check->File_Status = "Saved!";
-      $vid_check->File_Name = $found_files[0];
-      $vid_check->save();
     }
 }

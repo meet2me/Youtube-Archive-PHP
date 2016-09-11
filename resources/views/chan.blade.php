@@ -3,7 +3,7 @@
 @section('content')
 <div class="row">
   <div class="col-md-2">
-    @include('extras.diskspace')
+    @include('sidebar.left')
   </div>
   <div class="col-md-8">
     <h1>{{ $chan->Title }}</h1>
@@ -27,6 +27,9 @@
           @if ($vid["YT_Status"] == 'unlisted')
             <tr class="table-warning">
           @endif
+          @if ($vid["YT_Status"] == 'public')
+            <tr>
+          @endif
             <td>{{ $vid["Title"] }}</td>
             <td><a href="https://www.youtube.com/watch?v={{ $vid["YT_ID"] }}">{{ $vid["YT_ID"] }}</a></td>
             <td>
@@ -44,18 +47,22 @@
             <td>{{ $vid["File_Status"] }}</td>
             <td>
               @if ($vid["File_Name"] == '')
-                  <a href="/chan/{{ $id }}/download/{{ $vid["id"] }}"><img src="/assets/img/icons/add.png" name="Download Video"></a>
+                @if (isset($queued_ids[$vid["id"]]))
+                  <img src="/assets/img/icons/drive_go.png" title="In Queue to Download">
+                @else
+                  <a href="/chan/{{ $id }}/download/{{ $vid["id"] }}"><img src="/assets/img/icons/add.png" title="Download Video"></a>
+                @endif
               @else
-                  <a href="/videos/{{ $id }}/{{ basename($vid["File_Name"]) }}"><img src="/assets/img/icons/disk.png" name="Watch"></a>
-                  <a href="/video/{{ $vid["YT_ID"] }}"><img src="/assets/img/icons/information.png" name="Info"></a>
+                  <a href="/videos/{{ $id }}/{{ basename($vid["File_Name"]) }}"><img src="/assets/img/icons/disk.png" title="Watch"></a>
+                  <a href="/video/{{ $vid["YT_ID"] }}"><img src="/assets/img/icons/information.png" title="Info"></a>
               @endif
-              <a href="/chan/{{ $id }}/update/{{ $vid["YT_ID"] }}"><img src="/assets/img/icons/arrow_refresh.png" name="Update Info"></a>
+              <a href="/chan/{{ $id }}/update/{{ $vid["YT_ID"] }}"><img src="/assets/img/icons/arrow_refresh.png" title="Update Info"></a>
             </td>
           </tr>
         @empty
-        <tr>
-          <td colspan="6" class="centerbold">No Videos!</td>
-        </tr>
+          <tr>
+            <td colspan="6" class="centerbold">No Videos!</td>
+          </tr>
         @endforelse
       </tbody>
     </table>

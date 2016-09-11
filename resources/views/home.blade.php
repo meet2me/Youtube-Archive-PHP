@@ -21,7 +21,7 @@
           @forelse ($channels as $chan)
             <tr>
               <td><img src="{{ $chan->ThumbnailURL }}" width=32 height=32></img></td>
-              <td><a href="/chan/{{ $chan->YT_ID }}">{{ $chan->Title }}</td>
+              <td><a href="/chan/{{ $chan->YT_ID }}">{{ $chan->Title }}</a></td>
               <td>
                 <span class="tag tag-success" title="Downloads">{{ $chanstats[$chan->id]['dl'] }}</span>
                 <span class="tag tag-info" title="Not Downloaded">{{ $chanstats[$chan->id]['nodl'] }}</span>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 
+use Carbon\Carbon;
+
 class Controller extends BaseController
 {
     public function __getDiskInfo()
@@ -149,5 +151,58 @@ class Controller extends BaseController
       }
 
       return true;
+    }
+
+    public function __getQueuedDownloads()
+    {
+      $jobs = \App\Job::all();
+
+      $queue = null;
+
+      foreach ($jobs as $job) {
+        $payload = json_decode($job->payload);
+
+        if(!preg_match("/.*db_video_id\\\";s:[0-9]{1,}:\\\"([0-9]{1,})\\\".*/", $payload->data->command, $video_id))
+        {
+          // No match found
+          continue;
+        }
+
+        $video = \App\Video::where('id', $video_id[1])->first();
+        $chan = \App\Channel::where('id', $video->Chan_ID)->first();
+
+        $queue[] = array(
+          "Video_YT_ID" => $video->YT_ID,
+          "Video_Title" => $video->Title,
+
+          "Chan_YT_ID" => $chan->YT_ID,
+          "Chan_Title" => $chan->Title,
+
+          "Date_Created" => $job->created_at->toDateTimeString(),
+        );
+      }
+
+      return $queue;
+    }
+
+    public function __getQueuedDownloadsIDs()
+    {
+      $jobs = \App\Job::all();
+
+      $queue = null;
+
+      foreach ($jobs as $job) {
+        $payload = json_decode($job->payload);
+
+        if(!preg_match("/.*db_video_id\\\";s:[0-9]{1,}:\\\"([0-9]{1,})\\\".*/", $payload->data->command, $video_id))
+        {
+          // No match found
+          continue;
+        }
+
+        $queue[$video_id[1]] = true;
+      }
+
+      return $queue;
     }
 }
