@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      @forelse ($queue as $q)
+      @foreach ($queue as $q)
         <tr>
           <td><a href="https://www.youtube.com/watch?v={{ $q['Video_YT_ID'] }}">{{ $q['Video_Title'] }}</a></td>
           <td><a href="/chan/{{ $q['Chan_YT_ID'] }}">{{ $q['Chan_Title'] }}</a></td>
@@ -16,11 +16,7 @@
         <tr>
           <td colspan="2">Date Created: {{ $q['Date_Created'] }}</td>
         </tr>
-      @empty
-        <tr>
-          <td colspan="2" class="centerbold">No videos to download!</td>
-        </tr>
-      @endforelse
+      @endforeach
     </tbody>
   </table>
 </div>

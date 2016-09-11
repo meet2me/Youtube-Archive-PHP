@@ -23,6 +23,8 @@ class HomeController extends Controller
         'channels' => $channels,
         'chanstats' => $chanstats,
         'disk' => $this->__getDiskInfo(),
+        'queue' => $this->__getQueuedDownloads(),
+        'recent_downloads' => $this->__getRecentDownloads(),
       ]);
     }
 

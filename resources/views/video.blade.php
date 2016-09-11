@@ -3,7 +3,7 @@
 @section("content")
 <div class="row">
   <div class="col-md-2">
-    @include('extras.diskspace')
+    @include('sidebar.left')
   </div>
   <div class="col-md-8">
     <ul class="list-group">

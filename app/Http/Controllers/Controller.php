@@ -205,4 +205,32 @@ class Controller extends BaseController
 
       return $queue;
     }
+
+    public function __getRecentDownloads()
+    {
+      // SELECT * FROM 'video_changelog' WHERE File_Status = "Saved!" ORDER BY id DESC LIMIT 0,5
+      $videos = \App\VideoChangeLog::where('File_Status', 'Saved!')
+                    ->orderBy('id', 'desc')
+	                  ->take(5)
+                    ->get();
+
+      $downloaded = null;
+
+      foreach ($videos as $video) {
+        $vid = \App\Video::where('id', $video->Video_ID)->first();
+        $chan = \App\Channel::where('id', $vid->Chan_ID)->first();
+
+        $downloaded[] = array(
+          "Video_YT_ID" => $vid->YT_ID,
+          "Video_Title" => $vid->Title,
+
+          "Chan_YT_ID" => $chan->YT_ID,
+          "Chan_Title" => $chan->Title,
+
+          "Date_Created" => $video->created_at->toDateTimeString(),
+        );
+      }
+
+      return $downloaded;
+    }
 }

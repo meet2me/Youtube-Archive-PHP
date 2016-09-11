@@ -25,6 +25,7 @@ class VideoController extends Controller
       'video' => $video,
       'chan' => $chan,
       'disk' => $this->__getDiskInfo(),
+      'queued_ids' => $this->__getQueuedDownloadsIDs(),
     ]);
   }
 }
