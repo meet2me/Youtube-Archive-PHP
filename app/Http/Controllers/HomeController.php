@@ -11,8 +11,15 @@ class HomeController extends Controller
 {
     public function index()
     {
-      $channels = \App\Channel::orderByRaw('Title COLLATE NOCASE ASC')
-                    ->get();
+      if(env('DB_CONNECTION') == 'sqlite')
+      {
+        $channels = \App\Channel::orderByRaw('Title COLLATE NOCASE ASC')
+                      ->get();
+      }else
+      {
+        $channels = \App\Channel::orderBy('Title', 'ASC')
+                      ->get();
+      }
 
       $chanstats = null;
       foreach ($channels as $chan) {
