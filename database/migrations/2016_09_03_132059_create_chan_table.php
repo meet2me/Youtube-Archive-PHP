@@ -16,7 +16,7 @@ class CreateChanTable extends Migration
             $table->increments('id');
             $table->string('YT_ID');
             $table->string('Title')->nullable();
-            $table->string('Description')->nullable();
+            $table->longText('Description')->nullable();
             $table->string('ThumbnailURL')->nullable();
             $table->string('UploadPlaylistID')->nullable();
             $table->timestamps();
