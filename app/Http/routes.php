@@ -30,6 +30,10 @@ $app->get('/chan/{chid}/update/{vid}', [
     'as' => 'chanvidupdate', 'uses' => 'ChanController@updateVideo'
 ]);
 
+$app->get('/chan/{id}/download/{vid}/silent', [
+    'as' => 'chandownloadvideosilent', 'uses' => 'ChanController@downloadVideoSilent'
+]);
+
 $app->get('/chan/{id}/download/{vid}', [
     'as' => 'chandownloadvideo', 'uses' => 'ChanController@downloadVideo'
 ]);

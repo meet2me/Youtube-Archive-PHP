@@ -50,7 +50,8 @@
                 @if (isset($queued_ids[$vid["id"]]))
                   <img src="/assets/img/icons/drive_go.png" title="In Queue to Download">
                 @else
-                  <a href="/chan/{{ $id }}/download/{{ $vid["id"] }}"><img src="/assets/img/icons/add.png" title="Download Video"></a>
+                  <!--<a id="dl_{{ $vid["id"] }}" class="download" achan="{{ $id }}" avid="{{ $vid["id"] }}" href="/chan/{{ $id }}/download/{{ $vid["id"] }}"><img id="dl_img_{{ $vid["id"] }}" src="/assets/img/icons/add.png" title="Download Video"></a>-->
+                  <img id="dl_{{ $vid["id"] }}" class="download" achan="{{ $id }}" avid="{{ $vid["id"] }}" src="/assets/img/icons/add.png" title="Download Video">
                 @endif
               @else
                   <a href="/videos/{{ $id }}/{{ basename($vid["File_Name"]) }}"><img src="/assets/img/icons/disk.png" title="Watch"></a>
@@ -74,4 +75,23 @@
     </div>
   </div>
 </div>
+
+<script>
+$(document).ready(function() {
+  $('img.download').click(function() {
+    var chan = $(this).attr('achan');
+    var vid = $(this).attr('avid');
+
+
+    $.get( "/chan/" + chan + "/download/" + vid + "/silent", function( data ) {
+      $("#dl_" + vid).attr("src","/assets/img/icons/drive_go.png"); // Change the icon to downloading
+      $("#dl_" + vid).attr("class",""); // Change class of icon to stop it from firing this event if clicked!
+      $("#dl_" + vid).attr("title","In Queue to Download"); // Change text
+    });
+
+    return false;
+  });
+});
+</script>
+
 @endsection

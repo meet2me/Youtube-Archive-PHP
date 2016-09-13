@@ -13,7 +13,6 @@
             <th></th>
             <th>Title</th>
             <th>Detail</th>
-            <th>Chan ID</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -21,7 +20,7 @@
           @forelse ($channels as $chan)
             <tr>
               <td><img src="{{ $chan->ThumbnailURL }}" width=32 height=32></img></td>
-              <td><a href="/chan/{{ $chan->YT_ID }}">{{ $chan->Title }}</a></td>
+              <td><a href="/chan/{{ $chan->YT_ID }}">{{ $chan->Title }}</a> <a href="https://www.youtube.com/channel/{{ $chan->YT_ID }}">[YT]</a></td>
               <td>
                 <span class="tag tag-success" title="Downloads">{{ $chanstats[$chan->id]['dl'] }}</span>
                 <span class="tag tag-info" title="Not Downloaded">{{ $chanstats[$chan->id]['nodl'] }}</span>
@@ -30,7 +29,6 @@
                 <span class="tag tag-warning" title="Unlisted">{{ $chanstats[$chan->id]['v_unlisted'] }}</span>
                 <span class="tag tag-danger" title="Not Found">{{ $chanstats[$chan->id]['v_notfound'] }}</span>
               </td>
-              <td><a href="https://www.youtube.com/channel/{{ $chan->YT_ID }}">{{ $chan->YT_ID }}</a></td>
               <td></td>
             </tr>
           @empty

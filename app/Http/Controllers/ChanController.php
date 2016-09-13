@@ -51,6 +51,13 @@ class ChanController extends Controller
       return redirect()->route('chan', ['id' => $chan_yt_id]);
     }
 
+    public function downloadVideoSilent($chan_yt_id, $db_video_id)
+    {
+      \Queue::push(new DownloadVideoJob($chan_yt_id, $db_video_id));
+
+      return null;
+    }
+
     public function updateVideo($chid, $vid)
     {
       $this->__ProcessSeperateVideo($vid);
