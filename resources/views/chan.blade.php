@@ -82,10 +82,10 @@ $(document).ready(function() {
     var chan = $(this).attr('achan');
     var vid = $(this).attr('avid');
 
+    $( "#dl_" + vid ).unbind();
 
     $.get( "/chan/" + chan + "/download/" + vid + "/silent", function( data ) {
       $("#dl_" + vid).attr("src","/assets/img/icons/drive_go.png"); // Change the icon to downloading
-      $("#dl_" + vid).attr("class",""); // Change class of icon to stop it from firing this event if clicked!
       $("#dl_" + vid).attr("title","In Queue to Download"); // Change text
     });
 
