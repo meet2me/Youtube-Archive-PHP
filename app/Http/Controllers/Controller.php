@@ -155,7 +155,8 @@ class Controller extends BaseController
 
     public function __getQueuedDownloads()
     {
-      $jobs = \App\Job::all();
+      $jobs = \App\Job::take(10)
+                    ->get();
 
       $queue = null;
 
