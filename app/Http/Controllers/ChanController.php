@@ -92,8 +92,10 @@ class ChanController extends Controller
         return "Channel not found!";
       }
 
-      $videos = \App\Video::where('Chan_ID', $chan->id)
-                      ->where('File_Status', '!=', 'Saved!')
+      $videos = \App\Video::where([
+                              ['Chan_ID', '=', $chan->id],
+                              ['File_Status', '!=', 'Saved!']
+                            ])
                       ->get();
 
       foreach ($videos as $video) {
