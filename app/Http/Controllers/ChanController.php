@@ -26,7 +26,7 @@ class ChanController extends Controller
       return view('chan', [
         'videos' => $videos,
         'chan' => $chan,
-        'id' => $id,
+        'id' => $chan->YT_ID,
         'disk' => $this->__getDiskInfo(),
         'queue' => $this->__getQueuedDownloads(),
         'queued_ids' => $this->__getQueuedDownloadsIDs(),
@@ -78,6 +78,26 @@ class ChanController extends Controller
 
       foreach ($videos as $video) {
         $this->__ProcessSeperateVideo($video->YT_ID);
+      }
+
+      return redirect()->route('chan', ['id' => $chid]);
+    }
+
+    public function downloadAll($chid)
+    {
+      $chan = \App\Channel::where('YT_ID', $chid)->first();
+
+      if(count($chan) == 0)
+      {
+        return "Channel not found!";
+      }
+
+      $videos = \App\Video::where('Chan_ID', $chan->id)
+                      ->orWhereNull('File_Status', '!=', 'Saved!')
+                      ->get();
+
+      foreach ($videos as $video) {
+        \Queue::push(new DownloadVideoJob($chan->YT_ID, (string)$video->id));
       }
 
       return redirect()->route('chan', ['id' => $chid]);

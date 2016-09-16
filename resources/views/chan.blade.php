@@ -62,14 +62,22 @@
           </tr>
         @empty
           <tr>
-            <td colspan="6" class="centerbold">No Videos!</td>
+            <td colspan="6" class="centerbold">No Channels!</td>
           </tr>
         @endforelse
       </tbody>
     </table>
   </div>
   <div class="col-md-2">
-    <div class="btn-group-vertical">
+    <div class="btn-group-vertical button-stretch">
+      <a href="/chan/{{ $id }}/downloadall" class="btn btn-primary" role="button">Download all</a>
+    </div>
+
+    <hr />
+
+    <p>These functions can be performed with <em>php artisan</em>. Using these may timeout for large channels</p>
+
+    <div class="btn-group-vertical button-stretch">
       <a href="/chan/{{ $id }}/update/uploads" class="btn btn-primary" role="button">Update Uploads & Get New Uploads</a>
       <a href="/chan/{{ $id }}/update/videos" class="btn btn-info" role="button">Update Listed Videos</a>
     </div>

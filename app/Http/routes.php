@@ -38,6 +38,10 @@ $app->get('/chan/{id}/download/{vid}', [
     'as' => 'chandownloadvideo', 'uses' => 'ChanController@downloadVideo'
 ]);
 
+$app->get('/chan/{id}/downloadall', [
+    'as' => 'chandownloadall', 'uses' => 'ChanController@downloadAll'
+]);
+
 // Video Info
 $app->get('/video/{vid}', [
     'as' => 'videoinfo', 'uses' => 'VideoController@index'

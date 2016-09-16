@@ -22,3 +22,7 @@ body {
   font-size: large;
   font-weight: bold;
 }
+
+.button-stretch {
+  width: 100%;
+}
