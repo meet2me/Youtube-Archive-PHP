@@ -93,7 +93,7 @@ class ChanController extends Controller
       }
 
       $videos = \App\Video::where('Chan_ID', $chan->id)
-                      ->orWhereNull('File_Status', '!=', 'Saved!')
+                      ->where('File_Status', '!=', 'Saved!')
                       ->get();
 
       foreach ($videos as $video) {
