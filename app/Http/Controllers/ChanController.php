@@ -91,12 +91,12 @@ class ChanController extends Controller
       {
         return "Channel not found!";
       }
+      
+      $videos = \App\Video::where('Chan_ID', '=', $chan->id)
+                          ->where('File_Status', null)
+                          ->get();
 
-      $videos = \App\Video::where([
-                              ['Chan_ID', '=', $chan->id],
-                              ['File_Status', '<>', 'Saved!']
-                            ])
-                      ->get();
+      exit('<pre>' . var_dump($videos) . '</pre>');
 
       foreach ($videos as $video) {
         \Queue::push(new DownloadVideoJob($chan->YT_ID, (string)$video->id));
