@@ -94,7 +94,7 @@ class ChanController extends Controller
 
       $videos = \App\Video::where([
                               ['Chan_ID', '=', $chan->id],
-                              ['File_Status', '!=', 'Saved!']
+                              ['File_Status', '<>', 'Saved!']
                             ])
                       ->get();
 
