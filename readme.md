@@ -9,3 +9,7 @@ Laravel Lumen is a stunningly fast PHP micro-framework for building web applicat
 ## License
 
 The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+
+## Preview
+
+![](https://i.imgur.com/Xb1SY9U.png)
