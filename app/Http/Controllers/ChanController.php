@@ -60,7 +60,11 @@ class ChanController extends Controller {
 	public function updateVideos($chid) {
 		$chan = \App\Channel::where('YT_ID', $chid)->first();
 
-		if (count($chan) == 0) {
+		// if (count($chan) == 0) {
+		// 	return "Channel not found!";
+		// }
+
+		if(empty($chan)){
 			return "Channel not found!";
 		}
 
@@ -140,10 +144,10 @@ class ChanController extends Controller {
 
 	public function __processVideo($chanid, $json) {
 		$vid_check = \App\Video::where('YT_ID', $json->snippet->resourceId->videoId)->first();
-
+		
 		// Video not exist. So create!
 		// if (count($vid_check) == 0) {
-		if (!empty($vid_check)) {
+		if (empty($vid_check)) {
 			// Create new Video
 			$v = new \App\Video;
 			$v->YT_ID = $json->snippet->resourceId->videoId;
