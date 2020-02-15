@@ -25,7 +25,12 @@ Laravel Lumen is a stunningly fast PHP micro-framework for building web applicat
 - YT_API_KEY=YOUR_YT_API_KEY
 - DL_LOC="/Users/techmates/Sites/Youtube-Archive-PHP/public/videos" (Relative path to the video storage directory; make sure that in 'public' directory you have new folder named 'videos' created)
 
+## Database Setup
+- Run php artisan migarte 
 
+## Start Server and Queue:
+- You can start the server: php -S localhost:8000
+- Start the queue listener: php artisan queue:listen
 
 
 ## License
