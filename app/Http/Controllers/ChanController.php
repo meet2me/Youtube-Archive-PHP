@@ -60,7 +60,7 @@ class ChanController extends Controller {
 	public function updateVideos($chid) {
 		$chan = \App\Channel::where('YT_ID', $chid)->first();
 
-		if (count($chan) == 0) {
+		if (empty($chan)) {
 			return "Channel not found!";
 		}
 
