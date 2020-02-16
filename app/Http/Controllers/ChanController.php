@@ -10,10 +10,9 @@ class ChanController extends Controller {
 		$chan = \App\Channel::where('YT_ID', $id)
 			->first();
 
-		// if(count($chan) == 0)
-		// {
-		//   return "Chan not found!";
-		// }
+		if (empty($chan)) {
+			return "Chan not found!";
+		}
 
 		$videos = \App\Video::where('Chan_ID', $chan->id)
 			->orderBy('Upload_Date', 'desc')
@@ -143,7 +142,7 @@ class ChanController extends Controller {
 
 		// Video not exist. So create!
 		// if (count($vid_check) == 0) {
-		if (!empty($vid_check)) {
+		if (empty($vid_check)) {
 			// Create new Video
 			$v = new \App\Video;
 			$v->YT_ID = $json->snippet->resourceId->videoId;
